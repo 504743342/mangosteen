@@ -1,8 +1,8 @@
 import { defineComponent } from "vue";
-export const first = defineComponent({
+export const Third = defineComponent({
   setup: (props, content) => {
     return () => (
-        <div>1</div>
+        <div>3</div>
     );
   },
 });
