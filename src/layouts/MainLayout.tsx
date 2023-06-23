@@ -6,12 +6,10 @@ export const MainLayout = defineComponent({
     const { slots } = context;
     return () => (
       <div>
-        <Navbar>
-          {{
-            default: () => slots.title?.(),
-            icon: () => slots.icon?.(),
-          }}
-        </Navbar>
+        <Navbar>{{
+          default: () => slots.title?.(),
+          icon: () => slots.icon?.(),
+        }}</Navbar>
         {slots.default?.()}
       </div>
     );
