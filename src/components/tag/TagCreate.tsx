@@ -23,6 +23,7 @@ export const TagCreate = defineComponent({
       { key: 'name', type: 'pattern', regex: /^.{1,4}$/, message: '只能填 1 到 4 个字符' },
       { key: 'sign', type: 'required', message: '必填' },
     ]
+    
     Object.assign(errors, {
       name: undefined,
       sign: undefined
