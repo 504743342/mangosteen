@@ -33,16 +33,16 @@ export class Time {
       .replace("SSS", millisecond.toString().padStart(3, "0"));
   }
     firstDayOfMonth() {
-        return new time(new Date(this.date.getFullYear(), this.date.getMonth(), 1, 0, 0, 0))
+        return new Time(new Date(this.date.getFullYear(), this.date.getMonth(), 1, 0, 0, 0))
     }
-    firstDayOfyear() {
-        return new time(new Date(this.date.getFullYear(), 0, 1, 0, 0, 0))
+    firstDayOfYear() {
+        return new Time(new Date(this.date.getFullYear(), 0, 1, 0, 0, 0))
     }
     lastDayOfMonth() {
-        return new time(new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0, 0, 0, 0))
+        return new Time(new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0, 0, 0, 0))
     }
-    lastDayOfyear() {
-        return new time(new Date(this.date.getFullYear()+ 1, 0, 0, 0, 0, 0))
+    lastDayOfYear() {
+        return new Time(new Date(this.date.getFullYear()+ 1, 0, 0, 0, 0, 0))
     }
     getRaw() {
         return this.date
@@ -79,6 +79,6 @@ export class Time {
             default:
                 throw new Error('Time.add: unknow unit')
         }
-        return new time(date)
+        return new Time(date)
     }
 }
