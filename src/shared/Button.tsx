@@ -14,6 +14,6 @@ export const Button = defineComponent({
     }
   },
   setup: (props, context) => {
-    return () => <button type={props.type} class={[s.button, s[props.level]]}>{context.slots.default?.()}</button>;
+    return () => <button type={props.type} onClick={props.onClick} class={[s.button, s[props.level]]}>{context.slots.default?.()}</button>;
   },
 });
