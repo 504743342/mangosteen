@@ -10,7 +10,8 @@ export const Button = defineComponent({
       default: "important",
     },
     type: {
-      type: String as PropType<"button" | "submit">
+      type: String as PropType<"button" | "submit">,
+      default: 'button'
     }
   },
   setup: (props, context) => {
