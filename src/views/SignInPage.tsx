@@ -6,6 +6,7 @@ import { Icon } from '../shared/Icon';
 import { validate } from '../shared/validate';
 import s from './SignInPage.module.scss';
 import { http } from '../shared/Http';
+import { useBool } from '../hooks/useBool';
 export const SignInPage = defineComponent({
   setup: (props, context) => {
     const formData = reactive({
@@ -17,6 +18,7 @@ export const SignInPage = defineComponent({
       code: []
     })
     const refValidationCode = ref<any>()
+    const {ref: refDisabled, toggle, on: disabled, off: enable} = useBool(false)
     const onSubmit = (e: Event) => {
       e.preventDefault()
       Object.assign(errors, {
@@ -35,9 +37,12 @@ export const SignInPage = defineComponent({
       throw error
     }
     const onClickSendValidationCode = async ()=>{
+      disabled()
       const response = await http.post('/validation_codes', {email: formData.email})
         .catch(onError)
-      refValidationCode.value?.startCount()
+        .finally(enable)
+        //成功
+      refValidationCode.value.startCount()
     }
     return () => (
       <MainLayout>{
@@ -58,6 +63,7 @@ export const SignInPage = defineComponent({
                   placeholder='请输入六位数字'
                   ref={refValidationCode}
                   countFrom={60}
+                  disabled={refDisabled.value}
                   onClick={onClickSendValidationCode}
                   v-model={formData.code} error={errors.code?.[0]} />
                 <FormItem style={{ paddingTop: '96px' }}>
