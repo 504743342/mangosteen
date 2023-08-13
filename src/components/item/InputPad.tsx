@@ -1,25 +1,27 @@
-import { PropType, defineComponent, ref } from "vue";
-import s from "./InputPad.module.scss";
-import { Icon } from "../../shared/Icon";
-import { DatetimePicker, Popup } from 'vant';
-import { Time } from "../../shared/time";
-
+import { defineComponent, PropType, ref } from 'vue';
+import { Icon } from '../../shared/Icon';
+import { Time } from '../../shared/time';
+import s from './InputPad.module.scss';
+import { DatetimePicker, NumberKeyboard, Popup } from 'vant';
 export const InputPad = defineComponent({
   props: {
-    name: {
-      type: String as PropType<string>,
-    },
+    happenAt: String,
+    amount: Number
   },
   setup: (props, context) => {
-    const now = new Date()
-    const refDate = ref<Date>(now)
-    const appendText = (n: number | string) => { 
+    const appendText = (n: number | string) => {
       const nString = n.toString()
       const dotIndex = refAmount.value.indexOf('.')
-      if (refAmount.value.length >= 13) { return }
-      if (dotIndex >= 0 && refAmount.value.length - dotIndex > 2) { return }
+      if (refAmount.value.length >= 13) {
+        return
+      }
+      if (dotIndex >= 0 && refAmount.value.length - dotIndex > 2) {
+        return
+      }
       if (nString === '.') {
-        if (dotIndex >= 0) { return }// 已经有小数点了
+        if (dotIndex >= 0) { // 已经有小数点了
+          return
+        }
       } else if (nString === '0') {
         if (dotIndex === -1) { // 没有小数点
           if (refAmount.value === '0') { // 没小数点，但是有0
@@ -33,8 +35,6 @@ export const InputPad = defineComponent({
       }
       refAmount.value += n.toString()
     }
-    const minDate = new Date(now.getFullYear() - 10, 0, 1)
-    const maxDate = new Date(now.getFullYear() + 10, now.getMonth() + 1, 0)
     const buttons = [
       { text: '1', onClick: () => { appendText(1) } },
       { text: '2', onClick: () => { appendText(2) } },
@@ -48,37 +48,40 @@ export const InputPad = defineComponent({
       { text: '.', onClick: () => { appendText('.') } },
       { text: '0', onClick: () => { appendText(0) } },
       { text: '清空', onClick: () => { refAmount.value = '0' } },
-      { text: '提交', onClick: () => { } },
+      {
+        text: '提交',
+        onClick: () => context.emit('update:amount',
+          parseFloat(refAmount.value) * 100)
+      },
     ]
     const refDatePickerVisible = ref(false)
     const showDatePicker = () => refDatePickerVisible.value = true
     const hideDatePicker = () => refDatePickerVisible.value = false
-    const setDate = (date: Date) => { refDate.value = date; hideDatePicker();}
-    const refAmount = ref('0')
+    const setDate = (date: Date) => {
+      context.emit('update:happenAt', date.toISOString());
+      hideDatePicker()
+    }
+    const refAmount = ref(props.amount ? (props.amount / 100).toString() : '0')
     return () => <>
       <div class={s.dateAndAmount}>
-          <span class={s.date}>
-            <Icon name="date" class={s.icon}/>
-            <span>
-              <span onClick={showDatePicker}>{new Time(refDate.value).format()}</span>
-              <Popup position="bottom" v-model:show={refDatePickerVisible.value}>
-                <DatetimePicker 
-                  value={refDate.value} 
-                  type="date" title="选择年月日" 
-                  min-date={minDate} max-date={maxDate}
-                  onConfirm={setDate}
-                  onCancel={hideDatePicker}
-                />
-              </Popup>
-            </span>
+        <span class={s.date}>
+          <Icon name="date" class={s.icon} />
+          <span>
+            <span onClick={showDatePicker}>{new Time(props.happenAt).format()}</span>
+            <Popup position='bottom' v-model:show={refDatePickerVisible.value}>
+              <DatetimePicker value={props.happenAt} type="date" title="选择年月日"
+                onConfirm={setDate} onCancel={hideDatePicker}
+              />
+            </Popup>
           </span>
-          <span class={s.amount} >{refAmount.value}</span>
+        </span>
+        <span class={s.amount}>{refAmount.value}</span>
       </div>
       <div class={s.buttons}>
-        {buttons.map((button) => 
+        {buttons.map(button =>
           <button onClick={button.onClick}>{button.text}</button>
         )}
       </div>
-    </>;
-  },
-});
+    </>
+  }
+})
