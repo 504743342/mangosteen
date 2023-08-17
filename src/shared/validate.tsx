@@ -40,7 +40,7 @@ function isEmpty(value: string | number | FData | null | undefined) {
 export function hasError(errors: any) {
   let result = false
   for (let key in errors) {
-    if (errors[key].length) {
+    if (errors[key]?.length > 0) {
       result = true
       break
     }

@@ -1,10 +1,10 @@
 import { PropType, defineComponent } from "vue";
 import s from "./Tags.module.scss";
-
 import { http } from "../../shared/Http";
 import { useTags } from "../../shared/useTags";
 import { Icon } from "../../shared/Icon";
 import { Button } from "../../shared/Button";
+import { RouterLink } from "vue-router";
 export const Tags = defineComponent({
   props: {
     kind: {
@@ -27,12 +27,12 @@ export const Tags = defineComponent({
       }
     return () => <>
         <div class={s.tags_wrapper}>
-          <div class={s.tag}>
+          <RouterLink to={`/tags/create?kind=${props.kind}`} class={s.tag}>
             <div class={s.sign}>
               <Icon name="add" class={s.createTag} />
             </div>
             <div class={s.name}>新增</div>
-          </div>
+          </RouterLink>
           {expensesTags.value.map((tag) => (
             <div class={[s.tag, props.selected === tag.id ? s.selected : '']}
               onClick={() => onSelect(tag)}
