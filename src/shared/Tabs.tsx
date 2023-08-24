@@ -9,6 +9,10 @@ export const Tabs = defineComponent({
       type: String as PropType<string>,
       required: false
     },
+    rerenderOnselect: {
+      type: Boolean as PropType<boolean>,
+      required: false
+    }
   },
   emits: ['update:selected'],
   setup: (props, context) => {
@@ -33,11 +37,16 @@ export const Tabs = defineComponent({
                     {item.props?.name}
                 </li>)}
             </ol>
+            {props.rerenderOnselect ? 
+            <div key={props.selected}>
+              {tabs.find(item=>item.props?.name === props.selected)}
+            </div> :
             <div>
-              {tabs.map(item =>
-                <div v-show={item.props?.name === props.selected}>{item}</div>
-              )}
+                {tabs.map(item => 
+                  <div v-show={item.props?.name === props.selected}>{item}</div>  
+                )}
             </div>
+          }
         </div>
     }
   },

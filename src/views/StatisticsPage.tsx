@@ -6,11 +6,11 @@ export const StatisticsPage = defineComponent({
   props: {
     name: {
       type: String as PropType<string>,
-    },
+  },
   },
   setup: (props, context) => {
     return () => (
-        <TimeTabsLayout component={Charts} />
+        <TimeTabsLayout rerenderOnSwitchTab={true} component={Charts} />
     );
   },
 });
