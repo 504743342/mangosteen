@@ -1,4 +1,4 @@
-import { PropType, computed, defineComponent, onMounted, ref } from "vue";
+import { PropType, computed, defineComponent, onMounted, ref, watch } from "vue";
 import s from "./Charts.module.scss";
 import { FormItem } from "../../shared/Form";
 import { LineChart } from "./LineChart";
@@ -40,7 +40,7 @@ export const Charts = defineComponent({
         return [new Date(time).toISOString(), amount]
       })
     })
-    onMounted(async ()=> {
+    const fetchData1 = async ()=> {
       const response = await http.get<{groups: Data1, summary: number}>('/items/summary', {
         happen_after: props.startDate,
         happen_before: props.endDate,
@@ -49,7 +49,9 @@ export const Charts = defineComponent({
         _mock: 'itemSummary'
       })
       data1.value = response.data.groups
-    })
+    }
+    onMounted(fetchData1)
+    watch(() => kind.value, fetchData1)
 
     // data2
     const data2 = ref<Data2>([])
@@ -59,7 +61,7 @@ export const Charts = defineComponent({
         value: item.amount
       }))
     )
-    onMounted(async ()=> {
+    const fetchData2 = async ()=> {
       const response = await http.get<{groups: Data2, summary: number}>('/items/summary', {
         happen_after: props.startDate,
         happen_before: props.endDate,
@@ -68,8 +70,10 @@ export const Charts = defineComponent({
         _mock: 'itemSummary'
       })
       data2.value = response.data.groups
-    })
-
+    }
+    onMounted(fetchData2)
+    watch(() => kind.value, fetchData2)
+    
     //data3
     const betterData3 = computed(() => {
       const total = data2.value.reduce((sum, item) => sum + item.amount, 0);
