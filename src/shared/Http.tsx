@@ -115,7 +115,6 @@ http.instance.interceptors.request.use((config) => {
 
 http.instance.interceptors.response.use((response) => {
   if(response.config._autoLoading === true) {
-    console.log(response);
     Toast.clear()
   }
   return response
