@@ -24,7 +24,7 @@ export const TagEdit = defineComponent({
         message:'确定删除吗？'
       })
       await http.delete(`/tags/${numberId}`, {
-        withItems: options?.withItems ? 'true' : 'false'
+        with_items: options?.withItems ? 'true' : 'false'
       }, {_autoLoading: true}).catch(onError)
       router.back()
     }
