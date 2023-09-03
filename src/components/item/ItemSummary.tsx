@@ -28,7 +28,7 @@ export const ItemSummary = defineComponent({
     const itemStore = useItemStore(['items', props.startDate, props.endDate])
     useAfterMe(() => itemStore.fetchItems(props.startDate, props.endDate))
     watch(
-      () => [props.startDate, props.endDate], 
+      () => [props.startDate, props.endDate],
       ()=>{
       itemStore.reset()
       itemStore.fetchItems()
@@ -95,7 +95,7 @@ export const ItemSummary = defineComponent({
             </ol>
             <div class={s.more}>
               {itemStore.hasMore ? (
-                <Button onClick={() => itemStore.fetchItems(props.startDate, props.endDate)}>加载更多</Button>
+                <Button onClick={() => itemStore.fetchNextPage(props.startDate, props.endDate)}>加载更多</Button>
               ) : (
                 <span>没有更多</span>
               )}
