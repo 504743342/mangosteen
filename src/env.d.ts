@@ -12,6 +12,8 @@ declare module "*.scss" {
   export default content;
 }
 
+declare var DEBUG = boolean
+
 type JSONValue =
   | null
   | boolean

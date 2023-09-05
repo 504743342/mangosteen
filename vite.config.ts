@@ -8,7 +8,13 @@ import { VantResolver } from 'unplugin-vue-components/resolvers';
 
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({command}) => {
+ return {
+  define: command === 'build' ? {
+    DEBUG: false
+  } : {
+    DEBUG: true
+  },
   build: {
     rollupOptions: {
       output: {
@@ -47,4 +53,4 @@ export default defineConfig({
       }
     }
   },
-})
+}})
