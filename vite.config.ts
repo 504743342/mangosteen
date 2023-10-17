@@ -35,6 +35,7 @@ export default defineConfig(({command}) => {
       }
     }
   },
+  base: './',
   plugins: [
     vue(),
     vueJsx({
